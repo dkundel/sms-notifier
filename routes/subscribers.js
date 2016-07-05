@@ -13,10 +13,9 @@ class Subscribers {
   }
 
   create(req, res, next) {
-    console.log(req.body);
     let { phoneNumber } = req.body;
     Subscriber.create({ phoneNumber, subscribed: true }).then(sub => {
-      res.send({data: sub});
+      res.send({ data: sub });
     });
   }
 }
