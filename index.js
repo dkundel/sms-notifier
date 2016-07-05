@@ -14,10 +14,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, 'views/index.html'));
-});
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
+app.get('/', (req, res, next) => {
+  res.render('index', { message: '' });
+});
 
 app.use('/subscribers', SubscribersRouter);
 app.use('/sms', SmsRouter);

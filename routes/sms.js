@@ -6,6 +6,7 @@ const twilio = require('twilio');
 const client = twilio();
 
 const { Subscriber } = require('../models');
+const config = require('../config.js');
 
 const SUBSCRIBE_COMMAND = 'subscribe';
 const UNSUBSCRIBE_COMMAND = 'unsubscribe';
@@ -57,11 +58,42 @@ class Sms {
       });
 
       Promise.all(messages).then(() => {
-        res.send(`All ${messages.length} messages sent!`);
+        res.render('index', { message: `${messages.length} have been sent!`});
       }).catch(err => {
-        res.status(500).send(err)
+        res.status(500).render('index', { message: err.message});
       });
     });
+  }
+
+  concierge(req, res, next) {
+    let { From, To, Body } = req.body;
+
+    if (From !== config.conciergeNumber) {
+      client.sendMessage({
+        from: config.twilioNumber,
+        to: config.conciergeNumber,
+        body: `(${From}) ${Body}`
+      }).then(() => {
+        res.send('');
+      });
+    } else {
+      // Format:
+      // +49111111111: Message
+      let splitIdx = Body.indexOf(':');
+      if (splitIdx === -1) {
+        res.type('text/plain').send(`The format is:
+Number: Message
+        `.trim());
+      } else {
+        let number = Body.substr(0, splitIdx).trim();
+        let content = Body.substr(splitIdx+1).trim();
+        client.sendMessage({
+          from: config.twilioNumber,
+          to: number,
+          body: content
+        });
+      }
+    }
   }
 
   sendMessage(to, message) {
@@ -90,6 +122,9 @@ SmsRouter.post('/', function (req, res, next) {
 });
 SmsRouter.post('/message', function (req, res, next) {
   sms.message(req, res, next);
+});
+SmsRouter.post('/concierge', function (req, res, next) {
+  sms.concierge(req, res, next);
 });
 
 module.exports = { Sms, SmsRouter };
