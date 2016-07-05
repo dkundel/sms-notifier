@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const models = require('./models');
 const { SubscribersRouter } = require('./routes/subscribers');
@@ -14,7 +15,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', (req, res, next) => {
-  res.send('Ahoy!');
+  res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
 
