@@ -1,6 +1,10 @@
 'use strict';
 
 const { Router } = require('express');
+const twilio = require('twilio');
+
+const client = twilio();
+
 const { Subscriber } = require('../models');
 
 const SUBSCRIBE_COMMAND = 'subscribe';
@@ -44,6 +48,30 @@ class Sms {
     }
   }
 
+  message(req, res, next) {
+    let { message } = req.body;
+
+    Subscriber.findAll().then(subs => {
+      let messages = subs.map(sub => {
+        return this.sendMessage(sub.phoneNumber, message)
+      });
+
+      Promise.all(messages).then(() => {
+        res.send(`All ${messages.length} messages sent!`);
+      }).catch(err => {
+        res.status(500).send(err)
+      });
+    });
+  }
+
+  sendMessage(to, message) {
+    return client.sendMessage({
+      from: 'Twitch',
+      to: to,
+      body: message
+    });
+  }
+
   isSubscribeCommand(message) {
     let cleanedUpMessage = message.toLowerCase().trim();
     return cleanedUpMessage === SUBSCRIBE_COMMAND;
@@ -59,6 +87,9 @@ const sms = new Sms();
 const SmsRouter = Router();
 SmsRouter.post('/', function (req, res, next) {
   sms.incomingNews(req, res, next);
+});
+SmsRouter.post('/message', function (req, res, next) {
+  sms.message(req, res, next);
 });
 
 module.exports = { Sms, SmsRouter };
