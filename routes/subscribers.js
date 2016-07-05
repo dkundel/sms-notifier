@@ -1,7 +1,9 @@
 'use strict';
 
-const Router = require('express').Router;
+const { Router } = require('express');
+
 const { Subscriber } = require('../models');
+const auth = require('../auth');
 
 class Subscribers {
   get(req, res, next) {
@@ -21,7 +23,7 @@ class Subscribers {
 
 const subscribers = new Subscribers();
 const SubscribersRouter = Router();
-SubscribersRouter.get('/', subscribers.get);
-SubscribersRouter.post('/', subscribers.create);
+SubscribersRouter.get('/', auth, subscribers.get);
+SubscribersRouter.post('/', auth, subscribers.create);
 
 module.exports = { Subscribers, SubscribersRouter };

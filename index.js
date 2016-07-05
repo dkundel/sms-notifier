@@ -5,9 +5,12 @@ const path = require('path');
 const models = require('./models');
 const { SubscribersRouter } = require('./routes/subscribers');
 const { SmsRouter } = require('./routes/sms');
+const config = require('./config');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const auth = require('./auth');
 
 app.use(bodyParser.json({})) 
 app.use(bodyParser.urlencoded({

@@ -6,7 +6,8 @@ const twilio = require('twilio');
 const client = twilio();
 
 const { Subscriber } = require('../models');
-const config = require('../config.js');
+const config = require('../config');
+const auth = require('../auth');
 
 const SUBSCRIBE_COMMAND = 'subscribe';
 const UNSUBSCRIBE_COMMAND = 'unsubscribe';
@@ -120,7 +121,7 @@ const SmsRouter = Router();
 SmsRouter.post('/', function (req, res, next) {
   sms.incomingNews(req, res, next);
 });
-SmsRouter.post('/message', function (req, res, next) {
+SmsRouter.post('/message', auth, function (req, res, next) {
   sms.message(req, res, next);
 });
 SmsRouter.post('/concierge', function (req, res, next) {
