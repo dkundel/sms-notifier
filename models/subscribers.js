@@ -2,7 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   const Subscriber = sequelize.define('Subscriber', {
-    phoneNumber: DataTypes.STRING,
+    phoneNumber: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     subscribed: DataTypes.BOOLEAN
   });
 

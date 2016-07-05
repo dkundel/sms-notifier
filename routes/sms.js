@@ -57,6 +57,8 @@ class Sms {
 
 const sms = new Sms();
 const SmsRouter = Router();
-SmsRouter.post('/', sms.incomingNews);
+SmsRouter.post('/', function (req, res, next) {
+  sms.incomingNews(req, res, next);
+});
 
 module.exports = { Sms, SmsRouter };
