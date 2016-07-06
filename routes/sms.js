@@ -9,6 +9,8 @@ const { Subscriber, History } = require('../models');
 const config = require('../config');
 const auth = require('../auth');
 
+const twilioGating = twilio.webhook();
+
 const SUBSCRIBE_COMMAND = 'subscribe';
 const UNSUBSCRIBE_COMMAND = 'unsubscribe';
 
@@ -63,10 +65,10 @@ class Sms {
           content: message,
           count: messages.length
         }).then(historyEntry => {
-          res.render('index', { message: `${messages.length} have been sent!`, content:'', isError: false});
+          res.render('index', { message: `${messages.length} have been sent!`, content: '', isError: false });
         });
       }).catch(err => {
-        res.status(500).render('index', { message: err.message, isError: true, content: ''});
+        res.status(500).render('index', { message: err.message, isError: true, content: '' });
       });
     });
   }
@@ -91,7 +93,7 @@ class Sms {
 +491111111111: Message`.trim());
       } else {
         let number = Body.substr(0, splitIdx).trim();
-        let content = Body.substr(splitIdx+1).trim();
+        let content = Body.substr(splitIdx + 1).trim();
         client.sendMessage({
           from: config.twilioNumber,
           to: number,
@@ -127,13 +129,13 @@ class Sms {
 
 const sms = new Sms();
 const SmsRouter = Router();
-SmsRouter.post('/', function (req, res, next) {
+SmsRouter.post('/', twilioGating, function (req, res, next) {
   sms.incomingNews(req, res, next);
 });
 SmsRouter.post('/message', auth, function (req, res, next) {
   sms.message(req, res, next);
 });
-SmsRouter.post('/concierge', function (req, res, next) {
+SmsRouter.post('/concierge', twilioGating, function (req, res, next) {
   sms.concierge(req, res, next);
 });
 

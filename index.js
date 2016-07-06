@@ -18,8 +18,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(auth);
-
 app.locals.concierge = config.concierge;
 app.locals.senderId = config.senderId;
 app.locals.messagingSid = config.messageServiceId;
@@ -29,16 +27,16 @@ app.set('views', './views');
 
 app.use(express.static('public'));
 
-app.get('/', (req, res, next) => {
+app.get('/', auth, (req, res, next) => {
   res.render('index', { message: '', content: req.query.content || '', isError: false });
 });
 
-app.get('/welcome', (req, res, next) => {
+app.get('/welcome', auth, (req, res, next) => {
   res.render('welcome');
 });
 
-app.use('/messages', MessagesRouter);
-app.use('/subscribers', SubscribersRouter);
+app.use('/messages', auth, MessagesRouter);
+app.use('/subscribers', auth, SubscribersRouter);
 app.use('/sms', SmsRouter);
 
 models.sequelize.sync().then(() => {

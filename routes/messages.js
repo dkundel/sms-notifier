@@ -3,6 +3,7 @@
 const { Router } = require('express');
 
 const { History, Draft } = require('../models');
+const auth = require('../auth');
 
 class Messages {
   get(req, res, next) {
@@ -28,13 +29,13 @@ class Messages {
 
 const messages = new Messages();
 const MessagesRouter = Router();
-MessagesRouter.get('/', (...args) => {
+MessagesRouter.get('/', auth, (...args) => {
   messages.get(...args);
 });
-MessagesRouter.get('/drafts', (...args) => {
+MessagesRouter.get('/drafts', auth, (...args) => {
   messages.getDrafts(...args);
 });
-MessagesRouter.post('/drafts', (...args) => {
+MessagesRouter.post('/drafts', auth, (...args) => {
   messages.saveDraft(...args);
 });
 
