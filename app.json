@@ -3,7 +3,7 @@
   "description": "Service to broadcast SMS using Twilio as well as a concierge service.",
   "website": "https://github.com/dkundel",
   "repository": "https://github.com/dkundel/sms-notifier",
-  "success_url": "/",
+  "success_url": "/welcome",
   "addons": ["heroku-postgresql"],
   "keywords": ["twilio", "sms", "concierge", "notifications"],
   "env": {

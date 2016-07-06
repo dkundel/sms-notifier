@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Notification Center</title>
+  <link rel="stylesheet" href="/normalize.css">
+  <link rel="stylesheet" href="/skeleton.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <hgroup>
+      <h1>SMS Notification Center</h1>
+      <h4>powered by Twilio</h4>
+      
+    </hgroup>
+  </header>
+  <div role="main">
+    <script>
+      function getUrl(path) {
+        return location.protocol + '//' + location.hostname + (location.port.length !== 0 ? ':'+location.port : '') + path;
+      }
+    </script>
+    <h3>Welcome!</h3>
+    <p>Thanks for setting up the service. We are almost done. Just a few more steps:</p>
+    <h4>Configure Messaging Service</h4>
+    <p>
+      <ol>
+        <li>Go to your messaging service <a href="https://www.twilio.com/console/sms/services/<%= messagingSid %>" target="_blank"><code><%= messagingSid %></code></a></li>
+        <li>Configure the Request URL as: <code><script>document.write(getUrl('/sms'))</script></code></li>
+      </ol>
+    </p>
+    <h4>Configure Concierge Number</h4>
+    <p>
+      <ol>
+        <li>Go to the configuration for your Twilio phone number: <code><%= concierge.targetNumber %></code></li>
+        <li>Configure the Request URL as: <code><script>document.write(getUrl('/sms/concierge'))</script></code></li>
+      </ol>
+    </p>
+    <h4>Ready to roll!</h4>
+    <div>
+      <a href="/"><button>Compose</button></a>
+      <a href="/subscribers"><button>Add Subscribers</button></a>
+      <a href="/messages"><button>History</button></a>
+      <a href="/messages/drafts"><button>Drafts</button></a>
+    </div>
+  </div>
+</body>
+</html>
