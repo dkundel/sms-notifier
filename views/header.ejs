@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Notification Center</title>
+  <link rel="stylesheet" href="/normalize.css">
+  <link rel="stylesheet" href="/skeleton.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <hgroup>
+      <h1>SMS Notification Center</h1>
+      <h4>powered by Twilio</h4>
+      
+    </hgroup>
+    <div class="app-info">
+      <div>
+        <h5>Concierge Service</h5>
+        Target Number (Yours): <strong><%= concierge.targetNumber %></strong>
+        <br>
+        Twilio Number (Public): <strong><%= concierge.twilioNumber %></strong>
+      </div>
+      <div>
+        <h5>Notifications</h5>
+        Sender ID: <strong><%= senderId %></strong>
+      </div>
+    </div>
+    <div>
+      <a href="/"><button>Compose</button></a>
+      <a href="/messages"><button>History</button></a>
+      <a href="/messages/drafts"><button>Drafts</button></a>
+    </div>
+  </header>

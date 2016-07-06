@@ -1,0 +1,43 @@
+{
+  "name": "SMS Notification Service",
+  "description": "Service to broadcast SMS using Twilio as well as a concierge service.",
+  "website": "https://github.com/dkundel",
+  "repository": "https://github.com/dkundel/sms-notifier",
+  "success_url": "/",
+  "addons": ["heroku-postgresql"],
+  "keywords": ["twilio", "sms", "concierge", "notifications"],
+  "env": {
+    "AUTH_USERNAME": {
+      "description": "Username to gain access to the service.",
+      "required": true
+    },
+    "AUTH_PASSWORD": {
+      "description": "Password to gain access to the service.",
+      "required": true
+    },
+    "TWILIO_ACCOUNT_SID": {
+      "description": "Your Twilio Account SID",
+      "required": true
+    },
+    "TWILIO_AUTH_TOKEN": {
+      "description": "Your Twilio Auth Token",
+      "required": true
+    },
+    "TWILIO_MESSAGE_SERVICE_ID": {
+      "description": "The SID of your Twilio Messaging service. (Activate co-pilot)",
+      "required": true
+    },
+    "TWILIO_SENDER_ID": {
+      "description": "An optional sender ID for broadcast messages. Can be alpha numeric",
+      "required": false
+    },
+    "MY_PHONE_NUMBER": {
+      "description": "The number that concierge SMS should be forwarded to.",
+      "required": false
+    },
+    "TWILIO_CONCIERGE_NUMBER": {
+      "description": "The Twilio number you want to use for the concierge service.",
+      "required": false
+    }
+  }
+}

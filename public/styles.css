@@ -3,63 +3,79 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;
+  /*font-family: 'Open Sans', sans-serif;*/
   display: flex;
   flex-direction: column;
-  background: #ecf0f1;
+  /*background: #ecf0f1;*/
 }
 
 header {
   text-align: center;
 }
 
-h1, h3 {
-  font-weight: 200;
-}
-
-h1 {
-  font-size: 2em;
-}
-
 div[role="main"] {
-  flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+div[role="main"] > * {
+  width: 100%;
+  align-self: center;
+  max-width: 600px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  justify-content: center;
-}
-
-.message, textarea, input[type="submit"] {
-  width: 100%;
-  max-width: 500px;
-  margin: 10px;
-  align-self: center;
-  text-align: center;
 }
 
 textarea {
-  height: 300px;
+  height: 230px;
 }
 
-input[type="submit"] {
-  background: transparent;
-  color: #3498db;
-  border: 2px solid #3498db;
-  padding: 5px;
+h1 {
+  margin-bottom: 0.5rem;
 }
 
-.message {
-  background: #2c3e50;
-  color: #fff;
+.message-entry {
+  margin-top: 20px;
+  background: #efefef;
+  padding: 10px 20px;
   border-radius: 5px;
-  padding: 10px;
 }
 
 .hidden {
   display: none;
+}
+
+.info-message {
+  background: #34495e;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  margin: 10px;
+}
+
+.info-message.error {
+  background: #e74c3c;
+}
+
+.app-info {
+  display: flex;
+  justify-content: center;
+  text-align: left;
+  flex-wrap: wrap;
+}
+
+.app-info div {
+  width: 380px;
+  background: #efefef;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 0 10px 20px 10px;
+}
+
+.app-info h5 {
+  text-align: center;
 }

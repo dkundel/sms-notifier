@@ -1,0 +1,14 @@
+<%- include('header') -%>
+  <div role="main">
+    <div class="info-message <%= message.length === 0 ? 'hidden': '' %> <%= isError ? 'error' : '' %>">
+      <%= message %>
+    </div>
+    <form method="POST" action="/subscribers/bulk">
+      <p>Add subscribers in a comma-separated list with international prefixes.</p>
+      <label for="numbers">Numbers</label>
+      <textarea id="numbers" name="numbers" placeholder="+491111111111,+4922222222222"></textarea>
+      <input class="button-primary" type="submit" value="Add Subscribers!">
+    </form>
+  </div>
+</body>
+</html>

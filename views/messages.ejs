@@ -1,0 +1,14 @@
+<%- include('header') -%>
+  <div role="main">
+    <div id="messageList">
+      <% messages.forEach(function (msg) { %>
+      <div class="message-entry">
+        <strong><%= !isDraft ? msg.count + ' sent | ' : '' %><%= msg.createdAt %></strong>
+        <p><pre><%= msg.content %></pre></p>
+        <a href="/?content=<%= msg.content %>"><button class="button-primary"><%= isDraft ? 'Send' : 'Resend' %> Message</button></a>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>

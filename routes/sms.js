@@ -5,7 +5,7 @@ const twilio = require('twilio');
 
 const client = twilio();
 
-const { Subscriber } = require('../models');
+const { Subscriber, History } = require('../models');
 const config = require('../config');
 const auth = require('../auth');
 
@@ -59,9 +59,14 @@ class Sms {
       });
 
       Promise.all(messages).then(() => {
-        res.render('index', { message: `${messages.length} have been sent!`});
+        History.create({
+          content: message,
+          count: messages.length
+        }).then(historyEntry => {
+          res.render('index', { message: `${messages.length} have been sent!`, content:'', isError: false});
+        });
       }).catch(err => {
-        res.status(500).render('index', { message: err.message});
+        res.status(500).render('index', { message: err.message, isError: true, content: ''});
       });
     });
   }
@@ -71,8 +76,8 @@ class Sms {
 
     if (From !== config.conciergeNumber) {
       client.sendMessage({
-        from: config.twilioNumber,
-        to: config.conciergeNumber,
+        from: config.concierge.twilioNumber,
+        to: config.concierge.targetNumber,
         body: `(${From}) ${Body}`
       }).then(() => {
         res.send('');
@@ -83,8 +88,7 @@ class Sms {
       let splitIdx = Body.indexOf(':');
       if (splitIdx === -1) {
         res.type('text/plain').send(`The format is:
-Number: Message
-        `.trim());
++491111111111: Message`.trim());
       } else {
         let number = Body.substr(0, splitIdx).trim();
         let content = Body.substr(splitIdx+1).trim();
@@ -98,11 +102,16 @@ Number: Message
   }
 
   sendMessage(to, message) {
-    return client.sendMessage({
-      from: 'Twitch',
+    let msg = {
       to: to,
-      body: message
-    });
+      body: message,
+      messaging_service_sid: config.messageServiceId
+    };
+
+    if (typeof config.senderId === 'string' && config.senderId.length !== 0) {
+      msg.from = config.senderId;
+    }
+    return client.sendMessage(msg);
   }
 
   isSubscribeCommand(message) {
