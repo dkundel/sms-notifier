@@ -76,7 +76,7 @@ class Sms {
   concierge(req, res, next) {
     let { From, To, Body } = req.body;
 
-    if (From !== config.conciergeNumber) {
+    if (From !== config.concierge.targetNumber) {
       client.sendMessage({
         from: config.concierge.twilioNumber,
         to: config.concierge.targetNumber,
@@ -95,7 +95,7 @@ class Sms {
         let number = Body.substr(0, splitIdx).trim();
         let content = Body.substr(splitIdx + 1).trim();
         client.sendMessage({
-          from: config.twilioNumber,
+          from: config.concierge.twilioNumber,
           to: number,
           body: content
         });
