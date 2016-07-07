@@ -40,7 +40,7 @@ app.get('/u/:number', (req, res, next) => {
 });
 
 app.use('/messages', auth, MessagesRouter);
-app.use('/subscribers', auth, SubscribersRouter);
+app.use('/subscribers', SubscribersRouter);
 app.use('/sms', SmsRouter);
 
 models.sequelize.sync().then(() => {
