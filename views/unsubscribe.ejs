@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Notification Center</title>
+  <link rel="stylesheet" href="/normalize.css">
+  <link rel="stylesheet" href="/skeleton.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <hgroup>
+      <h1>SMS Notification Center</h1>
+      <h4>powered by <a class="twilio-logo" href="https://twilio.com/"><img src="https://www.twilio.com/marketing/bundles/archetype/img/logo-wordmark--red.svg"></a></h4>
+      
+    </hgroup>
+  </header>
+  <div id="unsubscribeDialog" role="main">
+    <% if (!isError) { %>
+    <h3>Unsubscribed!</h3>
+    <% } else { %>
+    <h3 class="error">An Error Occurred!</h3>
+    <% } %>
+    <p><%= message %></p>
+    <hr>
+    <p>
+      If you want to set up your own service you can get the source code on GitHub:
+    </p>
+    <p class="github-info">
+      <a class="black" href="https://github.com/dkundel/sms-notifier"><span class="octicon octicon-mark-github"></span></a>
+      <br>
+      <br>
+      <a class="black" href="https://github.com/dkundel/sms-notifier">github.com/dkundel/sms-notifier</a>
+    </p>
+    <a href="https://github.com/dkundel/sms-notifier"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+  </div>
+</body>
+</html>

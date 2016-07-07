@@ -28,8 +28,8 @@
       "required": true
     },
     "TWILIO_SENDER_ID": {
-      "description": "An optional sender ID for broadcast messages. Can be alpha numeric",
-      "required": false
+      "description": "The sender ID for broadcast messages. Can be alpha numeric and up to 11 characters.",
+      "required": true
     },
     "MY_PHONE_NUMBER": {
       "description": "The number that concierge SMS should be forwarded to.",

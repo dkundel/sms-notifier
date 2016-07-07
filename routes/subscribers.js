@@ -5,6 +5,10 @@ const { Router } = require('express');
 const { Subscriber } = require('../models');
 const auth = require('../auth');
 
+const ERROR_TEXT = 'We were unable to change your status right now. Please try again later.'
+const UNSUBSCRIBE_TEXT = `You were successfully unsubscribed from this service.`
+const NOTFOUND_TEXT = 'We could not find you in our database. You are therefore already unsubscribed!'
+
 class Subscribers {
   get(req, res, next) {
     res.render('subscribers', { message: '', isError: false });
@@ -22,13 +26,13 @@ class Subscribers {
     numbers = numbers.split(',');
 
     numbers = numbers.filter(number => {
-      number = number.trim();
-
       //TODO: Improve phone number verification
-      return number.indexOf('+') === 0;
+      return number.trim().indexOf('+') === 0;
     })
 
-    let promises = numbers.map(this.addNumber);
+    let promises = numbers.map((...args) => {
+      return this.addNumber(...args);
+    });
 
     Promise.all(promises).then(() => {
       res.render('subscribers', { message: `Added ${numbers.length} new numbers to the database`, isError: false });
@@ -38,7 +42,34 @@ class Subscribers {
   }
 
   addNumber(phoneNumber) {
+    phoneNumber = this.sanitizeNumber(phoneNumber);
     return Subscriber.findOrCreate({ where: { phoneNumber }, defaults: { subscribed: true }});
+  }
+
+  sanitizeNumber(phoneNumber) {
+    return '+' + phoneNumber.trim().replace(/\D/gi, '');
+  }
+
+  toggleSubscribe(req, res, next) {
+    let number = this.sanitizeNumber(req.params.number);
+
+    Subscriber.findOne({
+      phoneNumber: number
+    }).then(sub => {
+      if (sub) {
+        sub.subscribed = false;
+
+        sub.save().then(sub => {
+          res.render('unsubscribe', { message: UNSUBSCRIBE_TEXT, isError: false });
+        }).catch(err => {
+          res.render('unsubscribe', { message: ERROR_TEXT, isError: true });
+        });
+      } else {
+        res.render('unsubscribe', { message: NOTFOUND_TEXT, isError: false })
+      }
+    }).catch(err => {
+      res.render('unsubscribe', { message: ERROR_TEXT, isError: true });
+    });
   }
 }
 
@@ -48,6 +79,9 @@ SubscribersRouter.get('/', auth, subscribers.get);
 SubscribersRouter.post('/', auth, subscribers.create);
 SubscribersRouter.post('/bulk', auth, function (...args) {
   subscribers.bulkAdd(...args);
+});
+SubscribersRouter.get('/unsubscribe/:number', function (...args) {
+  subscribers.toggleSubscribe(...args);
 });
 
 module.exports = { Subscribers, SubscribersRouter };

@@ -80,7 +80,9 @@ class Sms {
       client.sendMessage({
         from: config.concierge.twilioNumber,
         to: config.concierge.targetNumber,
-        body: `(${From}) ${Body}`
+        body: `(${From}) ${Body}
+[To Call:
+tel://${config.concierge.twilioNumber},${From}]`
       }).then(() => {
         res.send('');
       });

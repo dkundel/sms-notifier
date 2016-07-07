@@ -35,6 +35,10 @@ app.get('/welcome', auth, (req, res, next) => {
   res.render('welcome');
 });
 
+app.get('/u/:number', (req, res, next) => {
+  res.redirect(`/subscribers/unsubscribe/${req.params.number}`);
+});
+
 app.use('/messages', auth, MessagesRouter);
 app.use('/subscribers', auth, SubscribersRouter);
 app.use('/sms', SmsRouter);
