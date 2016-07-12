@@ -5,6 +5,6 @@ module.exports = {
   },
   messageServiceId: process.env.TWILIO_MESSAGE_SERVICE_ID,
   senderId: process.env.TWILIO_SENDER_ID,
-  password: process.env.AUTH_USERNAME || 'pw',
-  username: process.env.AUTH_PASSWORD || 'batman'
+  password: process.env.AUTH_PASSWORD || 'pw',
+  username: process.env.AUTH_USERNAME || 'batman'
 };
