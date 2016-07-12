@@ -4,7 +4,7 @@ const config = require('./config');
 module.exports = function (req, res, next) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.sendStatus(401);
+    return res.send(401);
   };
 
   var user = basicAuth(req);
