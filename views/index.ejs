@@ -3,6 +3,9 @@
     <div class="info-message <%= message.length === 0 ? 'hidden': '' %> <%= isError ? 'error' : '' %>">
       <%= message %>
     </div>
+    <form method="POST" action="/sms/initial">
+      <input type="submit" class="button-primary" value="Send Initial Message!">
+    </form>
     <form method="POST" action="/messages/drafts">
       <label for="message">Message</label>
       <textarea id="message" name="message" placeholder="Enter your message..."><%= content %></textarea>

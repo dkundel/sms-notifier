@@ -28,7 +28,7 @@ app.set('views', './views');
 app.use(express.static('public'));
 
 app.get('/', auth, (req, res, next) => {
-  res.render('index', { message: '', content: req.query.content || '', isError: false });
+  res.render('index', { message: req.query.m || '', content: req.query.content || '', isError: false });
 });
 
 app.get('/welcome', auth, (req, res, next) => {

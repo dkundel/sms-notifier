@@ -31,6 +31,11 @@ If you want to start receiving messages again, just write:
 'subscribe'!
 `;
 
+const MESSAGE_INITAL_SUBSCRIPTION = `Welcome to TOA16!
+We have set up this SMS service powered by our friends at Twilio in order to notify you in case of changes to the festival program, or other important announcements. You can unsubscribe from these alerts at any time by following the link within the text. Enjoy the festival!
+Unsubscribe by clicking:
+https://toa.twilio.rocks/u/`;
+
 class Sms {
   incomingNews(req, res, next) {
     let { Body, From, To } = req.body;
@@ -60,16 +65,35 @@ class Sms {
         return this.sendMessage(sub.phoneNumber, message)
       });
 
-      Promise.all(messages).then(() => {
-        History.create({
+      return Promise.all(messages).then(() => {
+        return History.create({
           content: message,
           count: messages.length
         }).then(historyEntry => {
           res.render('index', { message: `${messages.length} have been sent!`, content: '', isError: false });
         });
-      }).catch(err => {
-        res.status(500).render('index', { message: err.message, isError: true, content: '' });
       });
+    }).catch(err => {
+      res.status(500).render('index', { message: err.message, isError: true, content: '' });
+    });
+  }
+
+  initialMessage(req, res, next) {
+    Subscriber.findAll().then(subs => {
+      let messages = subs.map(sub => {
+        return this.sendMessage(sub.phoneNumber, MESSAGE_INITAL_SUBSCRIPTION + sub.phoneNumber);
+      });
+
+      return Promise.all(messages).then(() => {
+        return History.create({
+          content: MESSAGE_INITAL_SUBSCRIPTION,
+          count: messages.length
+        }).then(historyEntry => {
+          res.redirect(`/?m=${messages.length} have been sent!`);
+        });
+      });
+    }).catch(err => {
+      res.status(500).render('index', { message: err.message, isError: true, content: '' });
     });
   }
 
@@ -131,6 +155,9 @@ tel://${config.concierge.twilioNumber},${From}]`
 
 const sms = new Sms();
 const SmsRouter = Router();
+SmsRouter.post('/initial', auth, function (req, res, next) {
+  sms.initialMessage(req, res, next);
+});
 SmsRouter.post('/', twilioGating, function (req, res, next) {
   sms.incomingNews(req, res, next);
 });
