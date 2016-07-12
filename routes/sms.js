@@ -60,7 +60,11 @@ class Sms {
   message(req, res, next) {
     let { message } = req.body;
 
-    Subscriber.findAll().then(subs => {
+    Subscriber.findAll({
+      where: {
+        subscribed: true
+      }
+    }).then(subs => {
       let messages = subs.map(sub => {
         return this.sendMessage(sub.phoneNumber, message)
       });
@@ -79,7 +83,11 @@ class Sms {
   }
 
   initialMessage(req, res, next) {
-    Subscriber.findAll().then(subs => {
+    Subscriber.findAll({
+      where: {
+        subscribed: true
+      }
+    }).then(subs => {
       let messages = subs.map(sub => {
         return this.sendMessage(sub.phoneNumber, MESSAGE_INITAL_SUBSCRIPTION + sub.phoneNumber);
       });
