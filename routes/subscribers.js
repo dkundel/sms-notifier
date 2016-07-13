@@ -5,6 +5,9 @@ const { Router } = require('express');
 const { Subscriber } = require('../models');
 const auth = require('../auth');
 
+const LookupsClient = require('twilio').LookupsClient;
+const lookupClient = new LookupsClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
 const ERROR_TEXT = 'We were unable to change your status right now. Please try again later.'
 const UNSUBSCRIBE_TEXT = `You were successfully unsubscribed from this service.`
 const NOTFOUND_TEXT = 'We could not find you in our database. You are therefore already unsubscribed!'
@@ -43,7 +46,24 @@ class Subscribers {
 
   addNumber(phoneNumber) {
     phoneNumber = this.sanitizeNumber(phoneNumber);
-    return Subscriber.findOrCreate({ where: { phoneNumber }, defaults: { subscribed: true }});
+    return this.verifyNumber(phoneNumber).then(num => {
+      if (num === 'invalid') {
+        return Promise.resolve(null);
+      }
+      return Subscriber.findOrCreate({ where: { phoneNumber }, defaults: { subscribed: true }});
+    });
+  }
+
+  verifyNumber(phoneNumber) {
+    return new Promise((resolve, reject) => {
+      lookupClient.phoneNumbers(phoneNumber).get((err, info) => {
+        if (err && err.status === 404) {
+          resolve('invalid');
+          return;
+        }
+        resolve(phoneNumber);
+      });
+    });
   }
 
   sanitizeNumber(phoneNumber) {
