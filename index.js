@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({
 app.locals.concierge = config.concierge;
 app.locals.senderId = config.senderId;
 app.locals.messagingSid = config.messageServiceId;
+app.locals.errorMessage = '';
 
 app.set('view engine', 'ejs');
 app.set('views', './views');

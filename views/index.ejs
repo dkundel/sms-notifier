@@ -3,6 +3,9 @@
     <div class="info-message <%= message.length === 0 ? 'hidden': '' %> <%= isError ? 'error' : '' %>">
       <%= message %>
     </div>
+    <div class="info-message error <%= errorMessage.length === 0 ? 'hidden': '' %>">
+      <%= errorMessage %>
+    </div>
     <form method="POST" action="/sms/initial">
       <input type="submit" class="button-primary" value="Send Initial Message!">
     </form>

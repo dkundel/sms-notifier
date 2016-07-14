@@ -66,15 +66,24 @@ class Sms {
       }
     }).then(subs => {
       let messages = subs.map(sub => {
-        return this.sendMessage(sub.phoneNumber, message)
+        return this.sendMessage(sub.phoneNumber, message).then(val => {
+          return val;
+        }, err => {
+          if (!res.locals.errorMessage) {
+            res.locals.errorMessage = err.message;
+          }
+          return null;
+        })
       });
 
-      return Promise.all(messages).then(() => {
+      return Promise.all(messages).then(msgResults => {
+        let toSentCount = msgResults.length;
+        let actualSentCount = msgResults.filter(m => m !== null).length;
         return History.create({
           content: message,
-          count: messages.length
+          count: actualSentCount
         }).then(historyEntry => {
-          res.render('index', { message: `${messages.length} have been sent!`, content: '', isError: false });
+          res.render('index', { message: `${actualSentCount} of ${toSentCount} have been sent!`, content: '', isError: false });
         });
       });
     }).catch(err => {
