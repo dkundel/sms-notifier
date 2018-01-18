@@ -10,3 +10,6 @@ patch:
         patched: '2018-01-18T16:04:03.679Z'
     - sequelize-cli > gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
         patched: '2018-01-18T16:04:03.679Z'
+  'npm:moment:20170905':
+    - twilio > moment:
+        patched: '2018-01-18T16:04:28.208Z'
