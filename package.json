@@ -36,7 +36,7 @@
     "pg": "^6.0.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.17.2",
-    "sequelize-cli": "^3.0.0",
+    "sequelize-cli": "^5.0.1",
     "twilio": "^3.5.0",
     "snyk": "^1.69.0"
   },
