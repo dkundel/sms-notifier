@@ -33,11 +33,11 @@
     "body-parser": "^1.15.2",
     "ejs": "^2.4.2",
     "express": "^4.14.0",
-    "pg": "^6.0.1",
+    "pg": "^8.4.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.17.2",
+    "sequelize": "^6.1.0",
     "sequelize-cli": "^3.0.0",
-    "twilio": "^3.5.0",
+    "twilio": "^4.0.0",
     "snyk": "^1.69.0"
   },
   "devDependencies": {
